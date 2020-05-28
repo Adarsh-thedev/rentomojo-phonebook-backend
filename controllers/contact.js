@@ -1,6 +1,21 @@
 const {Contact} = require('../models/contact');
 const {validationResult} = require('express-validator');
 
+//middlewares
+exports.getContactById = (req,res, next, id) => {
+    Contact.findById(id).exec((err, contact) => {
+        if(err || !contact) {
+            return res.status(400).json({
+                error : 'No such contact found'
+            });
+        }
+        //populate a new object in req object
+        req.contact = contact;
+        next();
+    })
+}
+
+//actual routes
 //create
 exports.createContact = (req,res) => {
 
@@ -36,5 +51,22 @@ exports.getAllContacts = (req,res) => {
         }
         return res.json(contacts);
     })
+}
+
+//update
+exports.updateContact = (req,res) => {
+    Contact.findByIdAndUpdate(
+        {_id : req.contact._id}, //contact object was populated because of param as middleware
+        {$set : req.body},
+        {new : true, useFindAndModify : false},
+        (err,contact) => {
+            if(err) {
+                return res.status(400).json({
+                    error : 'Could not perform this operation'
+                })
+            }
+            return res.json(contact)
+        }
+    );
 }
 
