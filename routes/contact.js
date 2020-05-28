@@ -2,7 +2,15 @@ const express = require('express');
 const {check} = require('express-validator');
 const router = express.Router();
 
-const {createContact, getAllContacts} = require('../controllers/contact');
+const {
+        createContact, 
+        getAllContacts, 
+        updateContact, 
+        getContactById
+    } = require('../controllers/contact');
+
+//params
+router.param('contactId', getContactById);
 
 //routes
 //create
@@ -10,10 +18,6 @@ router.post('/contact', [
     check('name')
     .isLength({min : 1})
     .withMessage('Name is required'),
-
-    check('phoneNumber')
-    .isMobilePhone()
-    .withMessage('Invalid phone number'),
     
     check('email')
     .isEmail()
@@ -22,5 +26,8 @@ router.post('/contact', [
 
 //read(for testing)
 router.get('/contacts', getAllContacts);
+
+//update
+router.put('/contact/:contactId', updateContact);
 
 module.exports = router;
