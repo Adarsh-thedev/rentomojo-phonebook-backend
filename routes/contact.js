@@ -6,7 +6,8 @@ const {
         createContact, 
         getAllContacts, 
         updateContact, 
-        getContactById
+        getContactById,
+        deleteContact
     } = require('../controllers/contact');
 
 //params
@@ -29,5 +30,8 @@ router.get('/contacts', getAllContacts);
 
 //update
 router.put('/contact/:contactId', updateContact);
+
+//delete
+router.delete('/contact/:contactId', deleteContact);
 
 module.exports = router;
