@@ -43,14 +43,17 @@ exports.createContact = (req,res) => {
 
 //read
 exports.getAllContacts = (req,res) => {
-    Contact.find().exec((err,contacts) => {
-        if(err) {
-            return res.json({
-                error : 'Unable to fetch contacts from DB'
+    let sortBy = 'name';
+    Contact.find()
+      .sort([[sortBy,'asc']])
+      .exec((err,contacts) => {
+          if(err) {
+            return res.status(400).json({
+                error : 'Nothing inside contacts list'
             })
-        }
-        return res.json(contacts);
-    })
+          }
+          res.json(contacts)
+      })
 }
 
 //update
