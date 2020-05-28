@@ -15,12 +15,14 @@ exports.createContact = (req,res) => {
     const contact = new Contact(req.body);
     //if no errors, svae in DB
     contact.save((err,contact) => {
-        if(err) {
+        if(err || !contact) {
             return res.status(400).json({
-                error : 'Unable to save contact'
+                error : 'Unable to save this contact'
             })
         }
-        return res.json(contact);
+        return res.json({
+            message : 'Contact created successfully'
+        });
     })
 }
 
