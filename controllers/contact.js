@@ -36,7 +36,7 @@ exports.createContact = (req,res) => {
             })
         }
         return res.json({
-            message : 'Contact created successfully'
+            message : 'Contact created successfully!'
         });
     })
 }
@@ -68,5 +68,21 @@ exports.updateContact = (req,res) => {
             return res.json(contact)
         }
     );
+}
+
+//delete
+exports.deleteContact = (req,res) => {
+    const contact = req.contact;
+
+    contact.remove((err,contact) => {
+        if(err) {
+            return res.status(400).json({
+                error : 'Failed to delete contact'
+            })
+        }
+        return res.json({
+            message : 'Contact deleted successfully'
+        })
+    })
 }
 
